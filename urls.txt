@@ -1,0 +1,5 @@
+https://www.redblobgames.com/grids/hexagons/
+https://en.wikipedia.org/wiki/Regular_icosahedron
+https://math.stackexchange.com/questions/2811859/coordinates-of-vertices-of-an-icosahedron-sitting-on-a-face
+https://blender.stackexchange.com/questions/40997/how-can-i-make-a-hexagonal-grill
+https://math.stackexchange.com/questions/3334253/regular-icosahedron-how-much-to-rotate-x-y-z-to-get-from-face-to-face
