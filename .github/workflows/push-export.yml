@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 env:
   GODOT_VERSION: 3.4
   EXPORT_NAME: ico-dev
@@ -92,7 +93,8 @@ jobs:
       - name: Web Build
         run: |
           mkdir -v -p build/web
-          godot -v --export "HTML5" ./build/web/index.html
+          cd ico
+          godot -v --export "HTML5" ../build/web/index.html
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
