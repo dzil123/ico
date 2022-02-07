@@ -16,7 +16,8 @@ const RADIUS_FACE: float = (sqrt(3.0) * (3.0 + sqrt(5.0))) / 12.0
 # midradius
 const RADIUS_EDGE: float = (1.0 + sqrt(5.0)) / 4.0
 # 180 - dihedral angle
-const ANGLE = PI - acos(sqrt(5.0) / -3.0)
+#const ANGLE = PI - acos(sqrt(5.0) / -3.0)  # iso
+const ANGLE = PI - acos(1.0 / -3.0)  # octa
 
 var tris = [
 	Vector3(1, 0, 0),

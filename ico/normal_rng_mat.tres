@@ -3,7 +3,7 @@
 [sub_resource type="Shader" id=1]
 code = "shader_type spatial;
 //render_mode unshaded;
-render_mode depth_test_disable;
+//render_mode depth_test_disable;
 
 vec4 FAST_32_hash( vec2 gridcell )
 {
@@ -18,10 +18,19 @@ P *= P;                                          //    calculate and return the 
 return fract( P.xzxz * P.yyww * vec4( 1.0 / SOMELARGEFLOAT ) );
 }
 
+//void fragment() {
+//	vec4 x = (WORLD_MATRIX * vec4(NORMAL, 0.0));
+//	vec2 y = vec2(x.x + 3.0*x.z, x.y + 0.0 * x.w);
+//	ALBEDO = pow(FAST_32_hash(y).xyz, vec3(2.2));
+//}
+
+void vertex() {
+	COLOR = FAST_32_hash(VERTEX.xz);
+}
+
 void fragment() {
-	vec4 x = (CAMERA_MATRIX * vec4(NORMAL, 0.0));
-	vec2 y = vec2(x.x + 3.0*x.z, x.y + 3.0 * x.w);
-	ALBEDO = pow(FAST_32_hash(y).xyz, vec3(2.2));
+	ALBEDO = COLOR.xyz;
+//	ALBEDO = FAST_32_hash(VERTEX.xz).xyz;
 }
 "
 

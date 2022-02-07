@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://ico_wireframe.tscn" type="PackedScene" id=1]
 [ext_resource path="res://grid.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
 [ext_resource path="res://SmoothRotator.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ico.glb" type="PackedScene" id=5]
+[ext_resource path="res://octa.tscn" type="PackedScene" id=6]
 
 [sub_resource type="SphereMesh" id=3]
 
@@ -31,11 +33,19 @@ mesh = SubResource( 3 )
 material/0 = SubResource( 4 )
 
 [node name="SmoothRotator" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.756, -2.886 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.412, -2.886 )
 controller = NodePath("../rotatesource")
 
 [node name="ico_wireframe" parent="SmoothRotator" instance=ExtResource( 1 )]
 transform = Transform( 0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 0, 0 )
+visible = false
+
+[node name="ico" parent="SmoothRotator" instance=ExtResource( 5 )]
+transform = Transform( 0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 0, 0 )
+visible = false
+
+[node name="octa" parent="SmoothRotator" instance=ExtResource( 6 )]
+transform = Transform( 0.695913, 0.00481328, 0.71811, 0.585123, 0.575941, -0.570897, -0.416337, 0.817477, 0.397988, 0, 0, 0 )
 
 [node name="rotatesource" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.756, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.412, 0 )
