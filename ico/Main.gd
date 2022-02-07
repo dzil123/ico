@@ -18,6 +18,8 @@ const RADIUS_EDGE: float = (1.0 + sqrt(5.0)) / 4.0
 # 180 - dihedral angle
 #const ANGLE = PI - acos(sqrt(5.0) / -3.0)  # iso
 const ANGLE = PI - acos(1.0 / -3.0)  # octa
+# angle between standing on point and lying face flat  # octa
+const ANGLE2 = PI / 2.0 - asin(1.0 / sqrt(3.0))
 
 var tris = [
 	Vector3(1, 0, 0),
@@ -86,7 +88,15 @@ func _input(event):
 		index += 1
 		do_update()
 
-		ico.rotate(Vector3.LEFT, ANGLE)
+		ico.rotate(Vector3(0, 1, 0), deg2rad(45))
+		yield(get_tree().create_timer(1.0), "timeout")
+		ico.rotate(Vector3(1, 0, 0), ANGLE2)
+		yield(get_tree().create_timer(1.0), "timeout")
+		ico.rotate(Vector3(1, 0, 0), ANGLE)
+		yield(get_tree().create_timer(1.0), "timeout")
+		ico.rotate(Vector3(1, 0, 0), ANGLE2 * 2.0)
+		yield(get_tree().create_timer(1.0), "timeout")
+		ico.rotate(Vector3(1, 0, 0), ANGLE)
 
 	if event.is_action_pressed("move_left"):
 		if Tri.points_up(tri_pos):
