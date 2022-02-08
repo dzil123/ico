@@ -33,7 +33,7 @@ mesh = SubResource( 3 )
 material/0 = SubResource( 4 )
 
 [node name="SmoothRotator" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.912, -2.886 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.411, -2.886 )
 controller = NodePath("../rotatesource")
 
 [node name="ico_wireframe" parent="SmoothRotator" instance=ExtResource( 1 )]
@@ -49,7 +49,7 @@ transform = Transform( 0.695913, 0.00481328, 0.71811, 0.585123, 0.575941, -0.570
 visible = false
 
 [node name="octa2" parent="SmoothRotator" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.96046e-08, 0 )
+transform = Transform( 0.706946, -0.000112087, 0.707267, 0.577313, 0.577777, -0.57696, -0.408578, 0.816195, 0.408522, 0, -5.96046e-08, 0 )
 
 [node name="rotatesource" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.411, -2.886 )

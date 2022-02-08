@@ -88,15 +88,12 @@ func _input(event):
 		index += 1
 		do_update()
 
+		print(ico.transform.basis.get_euler())
 		ico.rotate(Vector3(0, 1, 0), deg2rad(45))
+		print(ico.transform.basis.get_euler())
 		yield(get_tree().create_timer(1.0), "timeout")
 		ico.rotate(Vector3(1, 0, 0), ANGLE2)
-		yield(get_tree().create_timer(1.0), "timeout")
-		ico.rotate(Vector3(1, 0, 0), ANGLE)
-		yield(get_tree().create_timer(1.0), "timeout")
-		ico.rotate(Vector3(1, 0, 0), ANGLE2 * 2.0)
-		yield(get_tree().create_timer(1.0), "timeout")
-		ico.rotate(Vector3(1, 0, 0), ANGLE)
+		print(ico.transform.basis.get_euler())
 
 	if event.is_action_pressed("move_left"):
 		if Tri.points_up(tri_pos):
