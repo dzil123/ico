@@ -3,3 +3,9 @@ https://en.wikipedia.org/wiki/Regular_icosahedron
 https://math.stackexchange.com/questions/2811859/coordinates-of-vertices-of-an-icosahedron-sitting-on-a-face
 https://blender.stackexchange.com/questions/40997/how-can-i-make-a-hexagonal-grill
 https://math.stackexchange.com/questions/3334253/regular-icosahedron-how-much-to-rotate-x-y-z-to-get-from-face-to-face
+
+https://www.gamedev.net/articles/programming/general-and-gameplay-programming/inverse-lerp-a-super-useful-yet-often-overlooked-function-r5230/
+https://gameprogrammingpatterns.com/command.html
+https://gameprogrammingpatterns.com/event-queue.html
+https://medium.com/benlearnsblender/using-vertex-colors-in-blender-2-8-8396352b29c4
+https://www.desmos.com/calculator/jdyfuyly2c

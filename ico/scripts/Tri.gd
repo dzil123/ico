@@ -1,6 +1,7 @@
 class_name Tri
 extends Object
 
+# https://www.boristhebrave.com/2021/05/23/triangle-grids/
 # Port of https://github.com/BorisTheBrave/grids/blob/main/src/updown_tri.py
 
 # const edge_length: float = 1
