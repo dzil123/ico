@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends ShapeConfig
+
+
+func init():
+	# https://en.wikipedia.org/wiki/Octahedron#Dimensions
+	RADIUS_VERTEX = sqrt(2.0) / 2.0
+	RADIUS_FACE = sqrt(6.0) / 6.0
+	RADIUS_EDGE = 0.5
+	ANGLE = PI - acos(-1.0 / 3.0)
+	START_ROTATION = Basis().rotated(Vector3(0, 1, 0), PI / 4.0).rotated(
+		Vector3(1, 0, 0), ANGLE2
+	)
+	print(\"aaa \", START_ROTATION.get_euler() * 180)
+
+
+# angle between standing on point and lying face flat  # octa
+const ANGLE2 = PI / 2.0 - asin(1.0 / sqrt(3.0))
+"
+
+[resource]
+script = SubResource( 1 )
+name = ""

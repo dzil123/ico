@@ -9,12 +9,24 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Object",
+"base": "Resource",
+"class": "Ani",
+"language": "GDScript",
+"path": "res://scripts/Ani.gd"
+}, {
+"base": "Resource",
+"class": "ShapeConfig",
+"language": "GDScript",
+"path": "res://scripts/ShapeConfig.gd"
+}, {
+"base": "Reference",
 "class": "Tri",
 "language": "GDScript",
-"path": "res://Tri.gd"
+"path": "res://scripts/Tri.gd"
 } ]
 _global_script_class_icons={
+"Ani": "",
+"ShapeConfig": "",
 "Tri": ""
 }
 
