@@ -61,11 +61,11 @@ func calculate(percent: float) -> Transform:
 	return Transform(basis, translation)
 
 
-func start(ani: Ani):
+func start(new_ani: Ani):
 	print("ani start")
 	if is_moving:
 		cancel()
-	self.ani = ani
+	ani = new_ani
 	is_moving = true
 
 

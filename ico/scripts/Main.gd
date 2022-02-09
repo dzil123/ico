@@ -63,7 +63,7 @@ func move(delta: Vector3):
 	do_update()
 
 
-func move2(delta: Vector3):
+func move2(_delta: Vector3):
 	pass
 
 
@@ -77,6 +77,8 @@ func _input(event):
 
 	if event.is_action_pressed("action"):
 		$Camera2.current = not $Camera2.current
+		print("pos ", octa.translation)
+		print("rot ", octa.transform.basis.get_euler() * 180.0 / PI)
 
 	if event.is_action_pressed("move_left"):
 		if Tri.points_up(tri_pos):
