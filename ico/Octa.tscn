@@ -19,7 +19,6 @@ render_mode cull_front;
 uniform sampler2D tex: hint_albedo;
 uniform float percent_visible : hint_range(0.0, 1.0, 0.01) = 0.1;
 uniform bool toggle_outer;
-uniform float smoothness : hint_range(0.0, 5.0) = 1.0;
 
 uniform bool separate_front_facing;
 uniform float front_percent_visible : hint_range(0.0, 1.0, 0.05) = 0.1;
@@ -36,7 +35,7 @@ void fragment() {
 	// rescale 0-1 to edge-center - the center coordinate is vec3(1/3)
 	p /= 3.0;
 	
-	vec3 k = smoothness * fwidth(bary);
+	vec3 k = fwidth(bary) / 2.0; // 2 is optimal because p-k,p+k
 	
 	vec3 edge_split = smoothstep(p-k, p+k, bary);
 	float edge = edge_split.x * edge_split.y * edge_split.z;
@@ -53,7 +52,6 @@ void fragment() {
 shader = SubResource( 1 )
 shader_param/percent_visible = 0.7
 shader_param/toggle_outer = false
-shader_param/smoothness = 1.0
 shader_param/separate_front_facing = null
 shader_param/front_percent_visible = 0.1
 shader_param/tex = ExtResource( 4 )
