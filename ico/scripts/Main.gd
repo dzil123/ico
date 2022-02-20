@@ -12,7 +12,7 @@ var tri_pos: Vector3
 var tri_rot: Basis
 
 onready var animator = $Animator
-onready var octa = $octa
+onready var octa = $Octa
 
 
 func _ready():

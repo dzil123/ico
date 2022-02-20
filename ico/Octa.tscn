@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/octa_wireframe.glb" type="PackedScene" id=1]
+[ext_resource path="res://assets/octa.glb" type="PackedScene" id=2]
+[ext_resource path="res://assets/octa_tex.tres" type="Texture" id=4]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+render_mode unshaded;
+
+// show only front:
+//render_mode cull_back;
+// show only back:
+render_mode cull_front;
+// show front and back:
+//render_mode cull_disabled, depth_draw_alpha_prepass;
+// end
+
+uniform sampler2D tex: hint_albedo;
+uniform float percent_visible : hint_range(0.0, 1.0, 0.01) = 0.1;
+uniform bool toggle_outer;
+uniform float smoothness : hint_range(0.0, 5.0) = 1.0;
+
+uniform bool separate_front_facing;
+uniform float front_percent_visible : hint_range(0.0, 1.0, 0.05) = 0.1;
+
+void fragment() {
+	ALBEDO = texture(tex, UV).rgb;
+	
+	vec3 bary = COLOR.xyz;  // triangle barycentric coordinates
+	
+	float p = percent_visible;
+	if (separate_front_facing && FRONT_FACING) {
+		p = front_percent_visible;
+	}
+	// rescale 0-1 to edge-center - the center coordinate is vec3(1/3)
+	p /= 3.0;
+	
+	vec3 k = smoothness * fwidth(bary);
+	
+	vec3 edge_split = smoothstep(p-k, p+k, bary);
+	float edge = edge_split.x * edge_split.y * edge_split.z;
+	
+	if (toggle_outer) {
+		edge = 1.0 - edge;
+	}
+	
+	ALPHA = edge;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/percent_visible = 0.7
+shader_param/toggle_outer = false
+shader_param/smoothness = 1.0
+shader_param/separate_front_facing = null
+shader_param/front_percent_visible = 0.1
+shader_param/tex = ExtResource( 4 )
+
+[sub_resource type="Shader" id=3]
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D tex: hint_albedo;
+
+void fragment() {
+	ALBEDO = texture(tex, UV).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/tex = ExtResource( 4 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="octa" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.98, 0, 0, 0, 0.98, 0, 0, 0, 0.98, 0, 0, 0 )
+
+[node name="Solid" parent="octa" index="0"]
+material_override = SubResource( 2 )
+
+[node name="octa_wireframe" parent="." instance=ExtResource( 1 )]
+
+[node name="Solid" parent="octa_wireframe" index="0"]
+material_override = SubResource( 4 )
+
+[editable path="octa"]
+[editable path="octa_wireframe"]

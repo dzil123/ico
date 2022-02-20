@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/octa.glb-eae37161551c837826b3e9f96e639ebb.scn"
+path="res://.import/octa_wireframe.glb-bc22e47e481848bf7560574617b07fe3.scn"
 
 [deps]
 
-source_file="res://assets/octa.glb"
-dest_files=[ "res://.import/octa.glb-eae37161551c837826b3e9f96e639ebb.scn" ]
+source_file="res://assets/octa_wireframe.glb"
+dest_files=[ "res://.import/octa_wireframe.glb-bc22e47e481848bf7560574617b07fe3.scn" ]
 
 [params]
 
