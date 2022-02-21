@@ -26,13 +26,13 @@ func tri_pos_2d() -> Vector2:
 
 func tri_pos_3d() -> Vector3:
 	var pos = tri_pos_2d()
-	return Vector3(pos.x, animator.config.RADIUS_FACE, pos.y)
+	return Vector3(pos.x, Octahedron.RADIUS_FACE, pos.y)
 
 
 func reset():
 	animator.cancel()
 	tri_pos = TRI_POS_START
-	tri_rot = animator.config.START_ROTATION
+	tri_rot = Octahedron.START_ROTATION
 	octa.transform = Transform(tri_rot, tri_pos_3d())
 
 	print(octa.transform.basis.get_euler())
@@ -57,7 +57,7 @@ func move(delta: Vector3):
 	ani.prev_basis = tri_rot
 	ani.rotation_axis = rotation_mat3.xform(delta)
 
-	tri_rot = tri_rot.rotated(ani.rotation_axis, animator.config.ANGLE)
+	tri_rot = tri_rot.rotated(ani.rotation_axis, Octahedron.ANGLE)
 
 	animator.start(ani)
 	do_update()

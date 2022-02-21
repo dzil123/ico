@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Ani.gd"
 }, {
-"base": "Resource",
-"class": "ShapeConfig",
-"language": "GDScript",
-"path": "res://scripts/ShapeConfig.gd"
-}, {
 "base": "Object",
 "class": "Tri",
 "language": "GDScript",
@@ -26,7 +21,6 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Ani": "",
-"ShapeConfig": "",
 "Tri": ""
 }
 
@@ -35,6 +29,10 @@ _global_script_class_icons={
 config/name="Ico"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Octahedron="*res://scripts/Octahedron.gd"
 
 [input]
 

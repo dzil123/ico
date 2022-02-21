@@ -3,7 +3,6 @@ extends Node
 signal completed
 
 export(NodePath) var follower_path
-export(Resource) var config
 export(float) var duration = 1.5  # seconds per move
 
 var is_moving := false
@@ -13,7 +12,7 @@ var ani: Ani
 
 func _ready():
 	print("ANIMATOR:")
-	var c: ShapeConfig = config
+	var c = Octahedron
 	print(c.RADIUS_VERTEX)
 	print(c.RADIUS_FACE)
 	print(c.RADIUS_EDGE)
@@ -42,19 +41,19 @@ func apply_follower(percent: float):
 
 
 func calculate(percent: float) -> Transform:
-	var basis = ani.prev_basis.rotated(ani.rotation_axis, percent * config.ANGLE)
+	var basis = ani.prev_basis.rotated(ani.rotation_axis, percent * Octahedron.ANGLE)
 
 	# assume flat ground
 	# angle_start, angle_end, angle_lerped
-	var a_start = (PI - config.ANGLE) / 2.0
-	var a_end = (PI + config.ANGLE) / 2.0
+	var a_start = (PI - Octahedron.ANGLE) / 2.0
+	var a_end = (PI + Octahedron.ANGLE) / 2.0
 	var a_lerped = lerp(a_start, a_end, percent)
 
 	var horizontal_percent = (1.0 - (cos(a_lerped) / cos(a_start))) / 2.0
 	var vertical_percent = (sin(a_lerped) - sin(a_start)) / (1.0 - sin(a_start))
 
 	var pos = ani.prev_pos.linear_interpolate(ani.next_pos, horizontal_percent)
-	var height = lerp(config.RADIUS_FACE, config.RADIUS_EDGE, vertical_percent)
+	var height = lerp(Octahedron.RADIUS_FACE, Octahedron.RADIUS_EDGE, vertical_percent)
 
 	var translation = Vector3(pos.x, height, pos.y)
 
