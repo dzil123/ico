@@ -1,15 +1,10 @@
 extends Spatial
 
-# eg a movement of (1,0,0) is rotation by ANGLE on axis rotation_mat3.x
-const rotation_mat3 = Basis(
-	Vector3(cos(PI / 3.0), 0, -sin(PI / 3.0)),
-	Vector3(-1, 0, 0),
-	Vector3(cos(PI / 3.0), 0, sin(PI / 3.0))
-)
 const TRI_POS_START = Vector3(1, 4, -3)
 
 var tri_pos: Vector3
 var tri_rot: Basis
+var orientation
 
 onready var animator = $Animator
 onready var octa = $Octa
@@ -33,6 +28,7 @@ func reset():
 	animator.cancel()
 	tri_pos = TRI_POS_START
 	tri_rot = Octahedron.START_ROTATION
+	orientation = Octahedron.START_ORIENTATION
 	octa.transform = Transform(tri_rot, tri_pos_3d())
 
 	print(octa.transform.basis.get_euler())
@@ -46,6 +42,7 @@ func do_update():
 	print("points up: ", Tri.points_up(tri_pos))
 	print("tri_pos: ", tri_pos)
 	print("cart_pos: ", tri_pos_3d())
+	print("orientation: ", orientation)
 
 
 func move(delta: Vector3):
@@ -55,9 +52,12 @@ func move(delta: Vector3):
 	tri_pos += delta
 	ani.next_pos = tri_pos_2d()
 	ani.prev_basis = tri_rot
-	ani.rotation_axis = rotation_mat3.xform(delta)
+	ani.rotation_axis = Grid.get_rotation_axis(delta)
 
-	tri_rot = tri_rot.rotated(ani.rotation_axis, Octahedron.ANGLE)
+	tri_rot = Grid.apply_rotation(tri_rot, delta)
+
+	var move = Grid.delta_to_move(delta)
+	orientation = Octahedron.GRAPH[orientation][move]
 
 	animator.start(ani)
 	do_update()

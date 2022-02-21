@@ -33,6 +33,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Octahedron="*res://scripts/Octahedron.gd"
+Grid="*res://scripts/Grid.gd"
 
 [input]
 
@@ -71,6 +72,11 @@ exit={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":81,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=8192
+limits/debugger_stdout/max_messages_per_frame=40
 
 [physics]
 
