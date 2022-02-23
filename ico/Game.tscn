@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Animator.gd" type="Script" id=2]
+[ext_resource path="res://assets/right_tri_Vert.tres" type="ArrayMesh" id=3]
 [ext_resource path="res://assets/grid.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Octa.tscn" type="PackedScene" id=5]
 
@@ -22,20 +23,33 @@ ambient_light_energy = 0.47
 [sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 1, 0, 0, 1 )
 
+[sub_resource type="MeshLibrary" id=8]
+item/0/name = "pointy tri"
+item/0/mesh = ExtResource( 3 )
+item/0/mesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/0/shapes = [  ]
+item/0/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+item/1/name = ""
+item/1/mesh = ExtResource( 3 )
+item/1/mesh_transform = Transform( -1, 0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0 )
+item/1/shapes = [  ]
+item/1/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="grid2" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )
+visible = false
 
 [node name="Circle" parent="grid2" index="0"]
 material_override = SubResource( 7 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.422191, 0.906507, 0, -0.906507, 0.422191, 2.368, 3.00415, -2.003 )
+transform = Transform( 1, 0, 0, 0, 0.422191, 0.906507, 0, -0.906507, 0.422191, 2.178, 7.174, -0.016 )
 visible = false
 environment = SubResource( 6 )
 current = true
+fov = 40.8
 
 [node name="Camera2" type="Camera" parent="."]
 transform = Transform( 0.692697, 0.515175, -0.504743, 0, 0.699838, 0.714302, 0.721229, -0.494795, 0.484775, 1.40222, 0.329811, -2.45173 )
@@ -54,6 +68,7 @@ duration = 0.3
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9391, 1.42538, -4.93046 )
+visible = false
 light_energy = 1.471
 shadow_enabled = true
 omni_range = 4096.0
@@ -61,5 +76,21 @@ omni_attenuation = 0.432375
 
 [node name="Octa" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.707103, -3.36766e-06, 0.70711, 0.577353, 0.577353, -0.577345, -0.40825, 0.816495, 0.40825, 2, 0.408, -2.887 )
+
+[node name="Spatial" type="Spatial" parent="."]
+transform = Transform( 1, 0, -0.5, 0, 1, 0, 0, 0, 0.866, 0, 0, 0 )
+
+[node name="GridMap" type="GridMap" parent="Spatial"]
+mesh_library = SubResource( 8 )
+cell_size = Vector3( 1, 1, 1 )
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PoolIntArray( 0, 0, 0, 1, 0, 0, 0, 65534, 0, 65535, 65534, 0, 0, 65535, 0, 1, 65535, 0 )
+}
+__meta__ = {
+"_editor_clip_": 0
+}
 
 [editable path="grid2"]
