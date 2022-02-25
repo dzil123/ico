@@ -24,8 +24,19 @@ func _root_viewport_size_changed():
 
 
 func read_commit():
+	var content = ""
+
 	var file = File.new()
-	file.open("res://commit.txt", File.READ)
-	var content = file.get_as_text()
+	var err = file.open("res://commit.txt", File.READ)
+	if err:
+		push_error("error opening commit.txt: %s" % err)
+	else:
+		content = file.get_as_text()
+
 	file.close()
+
+	content = content.strip_edges()
+	if content == "":
+		content = "COMMIT"
+
 	return content
