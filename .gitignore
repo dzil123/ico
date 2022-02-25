@@ -87,3 +87,4 @@ $RECYCLE.BIN/
 
 *.blend*
 !*.blend
+build/*/

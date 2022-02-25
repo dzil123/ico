@@ -88,6 +88,5 @@ quality/driver/driver_name="GLES2"
 vram_compression/import_s3tc=false
 vram_compression/import_etc2=false
 quality/shading/use_physical_light_attenuation=true
-quality/filters/msaa=4
-quality/filters/use_debanding=true
+quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
