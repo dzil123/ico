@@ -8,7 +8,7 @@ onready var commit_label = $Commit
 
 
 func _ready():
-	commit_label.text = read_commit().left(8)
+	commit_label.text = read_commit().left(7)
 	viewport.get_texture().flags = Texture.FLAG_FILTER
 	get_viewport().connect("size_changed", self, "_root_viewport_size_changed")
 
