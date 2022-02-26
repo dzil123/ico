@@ -16,7 +16,7 @@ jobs:
       image: barichello/godot-ci:3.4
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/templates
@@ -38,3 +38,16 @@ jobs:
           folder: build/web # The folder the action should deploy.
           target-folder: ${{ github.ref_name }}
           clean: true
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+      - name: Build
+        run: |
+          bash postprocess.sh
+      - name: Deploy to GitHub Pages (again)
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: .
