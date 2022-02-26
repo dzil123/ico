@@ -33,7 +33,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages # The branch the action should deploy to.
           folder: build/web # The folder the action should deploy.
           target-folder: ${{ github.ref_name }}
@@ -48,6 +47,5 @@ jobs:
       - name: Deploy to GitHub Pages (again)
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           folder: .
