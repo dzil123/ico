@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir -v -p build/web
           echo "${GITHUB_SHA}" > ico/commit.txt
-          (cd ico; godot -v --export "HTML5 Debug" ../build/web/index.html)
+          (cd ico; godot -v --export "HTML5" ../build/web/index.html)
       # Installing rsync is needed in order to deploy to GitHub Pages. Without it, the build will fail.
       - name: Install rsync
         run: |
