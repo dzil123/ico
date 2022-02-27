@@ -3,8 +3,11 @@ extends ViewportContainer
 enum SSAA { x1, x2, x4 }
 export(SSAA) var ssaa = SSAA.x4
 
+export(NodePath) var joystick_path
+
 onready var viewport_outer = $ViewportOuter
 onready var viewport_inner = $ViewportOuter/ViewportInnerContainer/ViewportInner
+onready var joystick = get_node(joystick_path)
 onready var root = $".."
 onready var is_portrait = tell_portrait()
 
@@ -18,6 +21,9 @@ func _ready():
 	get_viewport().connect("size_changed", self, "_root_viewport_size_changed")
 
 	apply_ssaa()
+
+	if not is_portrait:
+		joystick.hide()
 
 
 func apply_ssaa():

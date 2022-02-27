@@ -1,6 +1,7 @@
 extends Spatial
 
 const TRI_POS_START = Vector3(1, 4, -3)
+const MOVE_ACTIONS = ["move_up", "move_down", "move_left", "move_right"]
 
 var tri_pos: Vector3
 var tri_rot: Basis
@@ -63,51 +64,53 @@ func _on_animator_completed():
 	pass
 
 
-func _input(event):
-	if event.is_action_pressed("exit"):
+func get_move_dir(action):
+	var points_up = Tri.points_up(tri_pos)
+
+	match action:
+		"move_left":
+			if points_up:
+				return Vector3(-1, 0, 0)
+			else:
+				return Vector3(0, 0, 1)
+		"move_right":
+			if points_up:
+				return Vector3(0, 0, -1)
+			else:
+				return Vector3(1, 0, 0)
+		"move_up":
+			if points_up:
+				return null
+			else:
+				return Vector3(0, 1, 0)
+		"move_down":
+			if points_up:
+				return Vector3(0, -1, 0)
+			else:
+				return null
+
+	push_error("invalid action: " + action)
+
+
+func _process(_delta):
+	if Input.is_action_just_pressed("exit") and not OS.has_feature("web"):
 		get_tree().quit()
 
-	if event.is_action_pressed("action"):
+	if Input.is_action_just_pressed("action"):
 		$Camera2.current = not $Camera2.current
 		print("pos ", octa.translation)
 		print("rot ", octa.transform.basis.get_euler() * 180.0 / PI)
 
-	if event.is_action_pressed("move_left"):
-		if Tri.points_up(tri_pos):
-			move(Vector3(-1, 0, 0))
-		else:
-			move(Vector3(0, 0, 1))
-	if event.is_action_pressed("move_right"):
-		if Tri.points_up(tri_pos):
-			move(Vector3(0, 0, -1))
-		else:
-			move(Vector3(1, 0, 0))
-	if event.is_action_pressed("move_up"):
-		if Tri.points_up(tri_pos):
-			pass
-		else:
-			move(Vector3(0, 1, 0))
-	if event.is_action_pressed("move_down"):
-		if Tri.points_up(tri_pos):
-			move(Vector3(0, -1, 0))
-		else:
-			pass
+	if not animator.is_moving:
+		for action in MOVE_ACTIONS:
+			var analog_action = action + "_analog"
+			if Input.is_action_pressed(analog_action):
+				print("analog action: ", action)
+				Input.action_press(action)
 
-	if event is InputEventKey:
-		if not event.pressed:
-			return
-		match event.scancode:
-			KEY_R:
-				move2(Vector3(cos(PI / 3.0), 0, sin(PI / 3.0)))
-			KEY_T:
-				move2(Vector3(-cos(PI / 3.0), 0, -sin(PI / 3.0)))
-			KEY_F:
-				move2(Vector3(cos(PI / 3.0), 0, -sin(PI / 3.0)))
-			KEY_G:
-				move2(Vector3(-cos(PI / 3.0), 0, sin(PI / 3.0)))
-			KEY_V:
-				move2(Vector3(-1, 0, 0))
-			KEY_B:
-				move2(Vector3(1, 0, 0))
-			KEY_U:
-				reset()
+	for action in MOVE_ACTIONS:
+		if Input.is_action_just_pressed(action):
+			var dir = get_move_dir(action)
+			if dir != null:
+				move(dir)
+				break
