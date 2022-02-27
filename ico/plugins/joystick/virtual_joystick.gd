@@ -11,6 +11,7 @@ export(Color) var pressed_color := Color.gray
 
 # If the input is inside this range, the output is zero.
 export(float, 0, 200, 1) var deadzone_size: float = 10
+export(float, 0, 1) var deadzone_float: float = 0
 
 # The max distance the tip can reach.
 export(float, 0, 500, 1) var clampzone_size: float = 75
@@ -169,6 +170,10 @@ func _update_joystick(touch_position: Vector2) -> void:
 			(vector - (vector.normalized() * deadzone_size))
 			/ (clampzone_size - deadzone_size)
 		)
+		if abs(_output.x) < deadzone_float:
+			_output.x = 0
+		if abs(_output.y) < deadzone_float:
+			_output.y = 0
 	else:
 		_pressed = false
 		_output = Vector2.ZERO
@@ -177,23 +182,41 @@ func _update_joystick(touch_position: Vector2) -> void:
 		_update_input_actions()
 
 
+func inject_press(action, val):
+#	return Input.action_press(action, val)
+	var event = InputEventAction.new()
+	event.action = action
+	event.strength = val
+	event.pressed = true
+	Input.parse_input_event(event)
+
+
+func inject_release(action):
+#	return Input.action_release(action)
+	var event = InputEventAction.new()
+	event.action = action
+	event.strength = 0
+	event.pressed = false
+	Input.parse_input_event(event)
+
+
 func _update_input_actions():
 	if _output.x < 0:
-		Input.action_press(action_left, -_output.x)
+		inject_press(action_left, -_output.x)
 	elif Input.is_action_pressed(action_left):
-		Input.action_release(action_left)
+		inject_release(action_left)
 	if _output.x > 0:
-		Input.action_press(action_right, _output.x)
+		inject_press(action_right, _output.x)
 	elif Input.is_action_pressed(action_right):
-		Input.action_release(action_right)
+		inject_release(action_right)
 	if _output.y < 0:
-		Input.action_press(action_up, -_output.y)
+		inject_press(action_up, -_output.y)
 	elif Input.is_action_pressed(action_up):
-		Input.action_release(action_up)
+		inject_release(action_up)
 	if _output.y > 0:
-		Input.action_press(action_down, _output.y)
+		inject_press(action_down, _output.y)
 	elif Input.is_action_pressed(action_down):
-		Input.action_release(action_down)
+		inject_release(action_down)
 
 
 func _reset():
@@ -208,16 +231,16 @@ func _reset():
 			Input.is_action_pressed(action_left)
 			or Input.is_action_just_pressed(action_left)
 		):
-			Input.action_release(action_left)
+			inject_release(action_left)
 		if (
 			Input.is_action_pressed(action_right)
 			or Input.is_action_just_pressed(action_right)
 		):
-			Input.action_release(action_right)
+			inject_release(action_right)
 		if (
 			Input.is_action_pressed(action_down)
 			or Input.is_action_just_pressed(action_down)
 		):
-			Input.action_release(action_down)
+			inject_release(action_down)
 		if Input.is_action_pressed(action_up) or Input.is_action_just_pressed(action_up):
-			Input.action_release(action_up)
+			inject_release(action_up)
