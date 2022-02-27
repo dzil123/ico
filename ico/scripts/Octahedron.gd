@@ -97,8 +97,6 @@ var ROTATIONS = {}
 
 func _ready():
 	generate_rotations()
-	print(ROTATIONS)
-	print()
 
 
 func generate_rotations():
@@ -115,7 +113,6 @@ func generate_rotations():
 		if ROTATIONS.has(orientation):
 			continue
 
-		print(orientation, ":, ", path)
 		ROTATIONS[orientation] = rotation
 
 		var multiplier = -1 if POINTY[COLORS[orientation]] else 1

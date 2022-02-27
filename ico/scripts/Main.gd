@@ -31,7 +31,6 @@ func reset():
 	orientation = Octahedron.START_ORIENTATION
 	octa.transform = Transform(tri_rot, tri_pos_3d())
 
-	print(octa.transform.basis.get_euler())
 	do_update()
 
 
@@ -39,10 +38,7 @@ func do_update():
 #	var pos = Tri.tri_center(tris[index % tris.size()])
 	$Indicator.translation = tri_pos_3d() * Vector3(1, 0, 1)
 
-	print("points up: ", Tri.points_up(tri_pos))
-	print("tri_pos: ", tri_pos)
-	print("cart_pos: ", tri_pos_3d())
-	print("orientation: ", orientation)
+	print(orientation, " ", tri_pos)
 
 
 func move(delta: Vector3):
@@ -63,12 +59,8 @@ func move(delta: Vector3):
 	do_update()
 
 
-func move2(_delta: Vector3):
-	pass
-
-
 func _on_animator_completed():
-	print("animator completed")
+	pass
 
 
 func _input(event):

@@ -10,16 +10,6 @@ var percent_elapsed := 0.0  # 0 to 1
 var ani: Ani
 
 
-func _ready():
-	print("ANIMATOR:")
-	var c = Octahedron
-	print(c.RADIUS_VERTEX)
-	print(c.RADIUS_FACE)
-	print(c.RADIUS_EDGE)
-	print(c.ANGLE)
-	print("end")
-
-
 func _process(delta):
 	if not is_moving:
 		percent_elapsed = 0.0
@@ -61,7 +51,6 @@ func calculate(percent: float) -> Transform:
 
 
 func start(new_ani: Ani):
-	print("ani start")
 	if is_moving:
 		cancel()
 	ani = new_ani
@@ -69,7 +58,6 @@ func start(new_ani: Ani):
 
 
 func cancel():
-	print("ani cancel")
 	if is_moving:
 		apply_follower(1.0)
 	is_moving = false
