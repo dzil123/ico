@@ -9,6 +9,7 @@ var orientation
 
 onready var animator = $Animator
 onready var octa = $Octa
+onready var map = $Map
 
 
 func _ready():
@@ -42,7 +43,16 @@ func do_update():
 	print(orientation, " ", tri_pos)
 
 
+func can_move(delta: Vector3) -> bool:
+	var new_pos = tri_pos + delta
+	return map.in_map(new_pos)
+
+
 func move(delta: Vector3):
+	if not can_move(delta):
+		print("invalid")
+		return
+
 	var ani = Ani.new()
 	ani.prev_pos = tri_pos_2d()
 
