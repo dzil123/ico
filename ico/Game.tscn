@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Animator.gd" type="Script" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://scripts/Map.gd" type="Script" id=4]
 [ext_resource path="res://Octa.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/tri_tile.tres" type="ArrayMesh" id=6]
+[ext_resource path="res://scripts/MapShader.gd" type="Script" id=7]
+[ext_resource path="res://assets/grid_material.tres" type="Material" id=8]
 
 [sub_resource type="ProceduralSky" id=5]
 
@@ -98,3 +100,7 @@ data = {
 __meta__ = {
 "_editor_clip_": 0
 }
+
+[node name="MapShader" type="Node" parent="."]
+script = ExtResource( 7 )
+material = ExtResource( 8 )
