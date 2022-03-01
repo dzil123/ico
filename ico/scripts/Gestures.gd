@@ -11,13 +11,13 @@ func _ready():
 func dir_to_action(dir):
 	print(dir)
 	match dir:
-		Vector2(-1, 0):
+		Vector2.LEFT:
 			return "move_left"
-		Vector2(1, 0):
+		Vector2.RIGHT:
 			return "move_right"
-		Vector2(0, -1):
+		Vector2.UP:
 			return "move_up"
-		Vector2(0, 1):
+		Vector2.DOWN:
 			return "move_down"
 		_:
 			return null
