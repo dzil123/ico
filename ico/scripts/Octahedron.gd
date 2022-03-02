@@ -23,48 +23,69 @@ var START_ROTATION = Basis().rotated(Vector3(0, 1, 0), PI / 4.0).rotated(
 # Violet  flat
 # Pink    pointy
 
-# orientation -> color
-var COLORS = {
-	"R1": "R",
-	"R2": "R",
-	"R3": "R",
-	"O1": "O",
-	"O2": "O",
-	"O3": "O",
-	"Y1": "Y",
-	"Y2": "Y",
-	"Y3": "Y",
-	"G1": "G",
-	"G2": "G",
-	"G3": "G",
-	"C1": "C",
-	"C2": "C",
-	"C3": "C",
-	"I1": "I",
-	"I2": "I",
-	"I3": "I",
-	"V1": "V",
-	"V2": "V",
-	"V3": "V",
-	"P1": "P",
-	"P2": "P",
-	"P3": "P",
+enum COLORS_ENUM { R, O, Y, G, C, I, V, P }
+
+const COLORS_NAME = ["R", "O", "Y", "G", "C", "I", "V", "P"]
+
+const ORIENTATION_COLOR = {
+	"R1": COLORS_ENUM.R,
+	"R2": COLORS_ENUM.R,
+	"R3": COLORS_ENUM.R,
+	"O1": COLORS_ENUM.O,
+	"O2": COLORS_ENUM.O,
+	"O3": COLORS_ENUM.O,
+	"Y1": COLORS_ENUM.Y,
+	"Y2": COLORS_ENUM.Y,
+	"Y3": COLORS_ENUM.Y,
+	"G1": COLORS_ENUM.G,
+	"G2": COLORS_ENUM.G,
+	"G3": COLORS_ENUM.G,
+	"C1": COLORS_ENUM.C,
+	"C2": COLORS_ENUM.C,
+	"C3": COLORS_ENUM.C,
+	"I1": COLORS_ENUM.I,
+	"I2": COLORS_ENUM.I,
+	"I3": COLORS_ENUM.I,
+	"V1": COLORS_ENUM.V,
+	"V2": COLORS_ENUM.V,
+	"V3": COLORS_ENUM.V,
+	"P1": COLORS_ENUM.P,
+	"P2": COLORS_ENUM.P,
+	"P3": COLORS_ENUM.P
+}
+
+const ORIENTATION_INDEX = {
+	"R1": 1,
+	"R2": 2,
+	"R3": 3,
+	"O1": 1,
+	"O2": 2,
+	"O3": 3,
+	"Y1": 1,
+	"Y2": 2,
+	"Y3": 3,
+	"G1": 1,
+	"G2": 2,
+	"G3": 3,
+	"C1": 1,
+	"C2": 2,
+	"C3": 3,
+	"I1": 1,
+	"I2": 2,
+	"I3": 3,
+	"V1": 1,
+	"V2": 2,
+	"V3": 3,
+	"P1": 1,
+	"P2": 2,
+	"P3": 3
 }
 
 # color -> points_up
-var POINTY = {
-	"R": true,
-	"O": false,
-	"Y": true,
-	"G": false,
-	"C": false,
-	"I": true,
-	"V": false,
-	"P": true
-}
+const POINTY = [true, false, true, false, false, true, false, true]
 
 # orientation -> [result after (1,0,0), result after (0,1,0), result after (0,0,1)]
-var GRAPH = {
+const GRAPH = {
 	"R1": ["O3", "C2", "G1"],
 	"R2": ["G2", "O1", "C3"],
 	"R3": ["C1", "G3", "O2"],
@@ -115,7 +136,7 @@ func generate_rotations():
 
 		ROTATIONS[orientation] = rotation
 
-		var multiplier = -1 if POINTY[COLORS[orientation]] else 1
+		var multiplier = -1 if POINTY[ORIENTATION_COLOR[orientation]] else 1
 
 		for i in range(3):
 			var move = MOVES[i] * multiplier

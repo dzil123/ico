@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Animator.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://assets/tri_tile.tres" type="ArrayMesh" id=6]
 [ext_resource path="res://scripts/MapShader.gd" type="Script" id=7]
 [ext_resource path="res://assets/grid_material.tres" type="Material" id=8]
+[ext_resource path="res://scripts/FaceHUD.gd" type="Script" id=9]
+[ext_resource path="res://assets/octa_tex.tres" type="Texture" id=10]
 
 [sub_resource type="ProceduralSky" id=5]
 
@@ -104,3 +106,15 @@ __meta__ = {
 [node name="MapShader" type="Node" parent="."]
 script = ExtResource( 7 )
 material = ExtResource( 8 )
+
+[node name="FaceHUD" type="Control" parent="."]
+anchor_top = 0.1
+anchor_right = 0.2
+anchor_bottom = 0.456
+rect_scale = Vector2( 0.7, 0.7 )
+script = ExtResource( 9 )
+color = 1
+tex = ExtResource( 10 )
+is_ready = true
+scale = 0.4
+orientation = "O1"

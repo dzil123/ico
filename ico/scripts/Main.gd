@@ -10,6 +10,7 @@ var orientation
 onready var animator = $Animator
 onready var octa = $Octa
 onready var map = $Map
+onready var facehud = $FaceHUD
 
 
 func _ready():
@@ -39,6 +40,7 @@ func reset():
 func do_update():
 #	var pos = Tri.tri_center(tris[index % tris.size()])
 	$Indicator.translation = tri_pos_3d() * Vector3(1, 0, 1)
+	facehud.orientation = orientation
 
 	print(orientation, " ", tri_pos)
 
