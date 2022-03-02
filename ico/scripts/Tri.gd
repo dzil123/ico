@@ -27,19 +27,11 @@ static func points_up(tri: Vector3) -> bool:
 static func tri_corners(tri: Vector3) -> PoolVector3Array:
 	if points_up(tri):
 		return PoolVector3Array(
-			[
-				tri_center(tri + Vector3.RIGHT),
-				tri_center(tri + Vector3.BACK),
-				tri_center(tri + Vector3.UP)
-			]
+			[tri + Vector3.RIGHT, tri + Vector3.BACK, tri + Vector3.UP]
 		)
 	else:
 		return PoolVector3Array(
-			[
-				tri_center(tri + Vector3.LEFT),
-				tri_center(tri + Vector3.FORWARD),
-				tri_center(tri + Vector3.DOWN)
-			]
+			[tri + Vector3.LEFT, tri + Vector3.FORWARD, tri + Vector3.DOWN]
 		)
 
 
@@ -56,19 +48,11 @@ static func pick_tri(pos: Vector2) -> Vector3:
 static func tri_neighbors(tri: Vector3) -> PoolVector3Array:
 	if points_up(tri):
 		return PoolVector3Array(
-			[
-				tri_center(tri + Vector3.LEFT),
-				tri_center(tri + Vector3.DOWN),
-				tri_center(tri + Vector3.FORWARD)
-			]
+			[tri + Vector3.LEFT, tri + Vector3.DOWN, tri + Vector3.FORWARD]
 		)
 	else:
 		return PoolVector3Array(
-			[
-				tri_center(tri + Vector3.RIGHT),
-				tri_center(tri + Vector3.UP),
-				tri_center(tri + Vector3.BACK)
-			]
+			[tri + Vector3.RIGHT, tri + Vector3.UP, tri + Vector3.BACK]
 		)
 
 
