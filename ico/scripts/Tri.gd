@@ -65,3 +65,9 @@ static func tri_dist(tri1: Vector3, tri2: Vector3) -> int:
 		+ int(round(abs(tri1.y - tri2.y)))
 		+ int(round(abs(tri1.z - tri2.z)))
 	)
+
+
+static func is_valid(tri: Vector3) -> bool:
+	tri = tri.round()
+	var sum = int(tri.x) + int(tri.y) + int(tri.z)
+	return (sum == 1) or (sum == 2)

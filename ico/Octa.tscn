@@ -74,7 +74,7 @@ shader_param/tex = ExtResource( 4 )
 [node name="Spatial" type="Spatial"]
 
 [node name="octa" parent="." instance=ExtResource( 2 )]
-transform = Transform( 0.98, 0, 0, 0, 0.98, 0, 0, 0, 0.98, 0, 0, 0 )
+transform = Transform( 0.99, 0, 0, 0, 0.99, 0, 0, 0, 0.99, 0, 0, 0 )
 
 [node name="Solid" parent="octa" index="0"]
 material_override = SubResource( 2 )

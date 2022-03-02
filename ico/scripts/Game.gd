@@ -1,23 +1,30 @@
 extends Spatial
 
-const TRI_POS_START = Vector3(1, 4, -3)
+export(Vector3) var tri_pos_start = Vector3(1, 4, -3)
+export(String) var orientation_start = "R1"
+
 const MOVE_ACTIONS = ["move_up", "move_down", "move_left", "move_right"]
 
 var tri_pos: Vector3
 var tri_rot: Basis
-var orientation
+var orientation: String
 
 onready var animator = $Animator
 onready var map = $Map
 
 
 func _ready():
+	var pos_pointy = Tri.points_up(tri_pos_start)
+	var orientation_pointy = Octahedron.POINTY[Octahedron.ORIENTATION_COLOR[orientation_start]]
+	assert(pos_pointy == orientation_pointy)
+	assert(Tri.is_valid(tri_pos_start))
+
 	reset()
 	animator.connect("completed", self, "_on_animator_completed")
 
 
 func tri_pos_2d() -> Vector2:
-	return Tri.tri_center(tri_pos) * Vector2(1.0, -1.0)
+	return Tri.tri_center(tri_pos) * Vector2(1, -1)
 
 
 func tri_pos_3d() -> Vector3:
@@ -27,12 +34,13 @@ func tri_pos_3d() -> Vector3:
 
 func reset():
 	animator.cancel()
-	tri_pos = TRI_POS_START
-	tri_rot = Octahedron.START_ROTATION
-	orientation = Octahedron.START_ORIENTATION
+	tri_pos = tri_pos_start
+	orientation = orientation_start
+	tri_rot = Octahedron.ROTATIONS[orientation]
 	animator.octa.transform = Transform(tri_rot, tri_pos_3d())
 	animator.facehud.m_orientation = orientation
 	animator.facehud.m_percent_anim = 0
+	$MapShader.reset()
 
 	do_update()
 
@@ -53,6 +61,8 @@ func move(delta: Vector3):
 		print("invalid")
 		return
 
+	var move = Grid.delta_to_move(delta)
+
 	var ani = Ani.new()
 	ani.prev_pos = tri_pos_2d()
 
@@ -61,13 +71,10 @@ func move(delta: Vector3):
 	ani.prev_basis = tri_rot
 	ani.rotation_axis = Grid.get_rotation_axis(delta)
 	ani.prev_orientation = orientation
-
-	tri_rot = Grid.apply_rotation(tri_rot, delta)
-
-	var move = Grid.delta_to_move(delta)
 	ani.move = move
 
 	orientation = Octahedron.GRAPH[orientation][move]
+	tri_rot = Octahedron.ROTATIONS[orientation]
 
 	animator.start(ani)
 	do_update()

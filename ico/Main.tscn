@@ -1,13 +1,17 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Game.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Hud.gd" type="Script" id=2]
 [ext_resource path="res://scripts/SSAA.gd" type="Script" id=3]
 [ext_resource path="res://plugins/joystick/virtual_joystick.tscn" type="PackedScene" id=5]
 
+[sub_resource type="Theme" id=1]
+Label/colors/font_color = Color( 0.780392, 0.811765, 0.8, 1 )
+
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = SubResource( 1 )
 
 [node name="HUD" type="Control" parent="."]
 anchor_right = 1.0
