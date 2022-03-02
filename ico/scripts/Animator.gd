@@ -2,8 +2,12 @@ extends Node
 
 signal completed
 
-export(NodePath) var follower_path
+export(NodePath) var octa_path
+export(NodePath) var facehub_path
 export(float) var duration = 1.5  # seconds per move
+
+onready var octa = get_node(octa_path) as Spatial
+onready var facehud = get_node(facehub_path)
 
 var is_moving := false
 var percent_elapsed := 0.0  # 0 to 1
@@ -26,8 +30,11 @@ func _process(delta):
 
 
 func apply_follower(percent: float):
-	var follower = get_node(follower_path) as Spatial
-	follower.transform = calculate(percent)
+	octa.transform = calculate(percent)
+
+	facehud.m_orientation = ani.prev_orientation
+	facehud.m_move = ani.move
+	facehud.m_percent_anim = percent
 
 
 func calculate(percent: float) -> Transform:

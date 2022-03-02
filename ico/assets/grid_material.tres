@@ -9,6 +9,7 @@ uniform vec4 outer_color: hint_color = vec4(vec3(0.4), 1.0);
 uniform vec4 inner_color: hint_color = vec4(vec3(0.2), 1.0);
 uniform bool toggle_outer = false;
 uniform vec3 highlight_tri_pos;
+uniform bool enable_highlight_tri_pos = true;
 
 varying flat vec3 tri_pos;
 
@@ -45,7 +46,7 @@ void fragment() {
 	
 	vec3 color = mix(outer_color, inner_color, edge).rgb;
 	
-	if (distance(tri_pos, highlight_tri_pos) < 0.1) {
+	if (enable_highlight_tri_pos && distance(tri_pos, highlight_tri_pos) < 0.1) {
 		color = vec3(1, 0, 0);
 	}
 	
@@ -60,3 +61,4 @@ shader_param/outer_color = Color( 0.51, 0.51, 0.51, 1 )
 shader_param/inner_color = Color( 0.239216, 0.239216, 0.239216, 1 )
 shader_param/toggle_outer = false
 shader_param/highlight_tri_pos = Vector3( 0, 4, -3 )
+shader_param/enable_highlight_tri_pos = false

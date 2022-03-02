@@ -1,13 +1,14 @@
 extends Control
 tool
 
-export(Octahedron.COLORS_ENUM) var color = Octahedron.COLORS_ENUM.R setget set_color
-export(int, 1, 3) var orientation_index = 1 setget set_orientation_index
-export(Texture) var tex
-export(bool) var is_ready = false
-export(float, 0.05, 5) var scale = 100
-export(String) var orientation setget set_orientation
-
+export(Texture) var m_tex
+export(float, 0.05, 5) var m_scale = 100
+export(float, 0.5, 1) var m_local_scale = 1
+export(String) var m_orientation = "R1"
+export(int, 0, 2) var m_move = 0
+export(float, 0, 1) var m_percent_anim = 0
+#export(Color) var m_bg_color = Color("282f36")
+#export(Color) var m_border_color = Color.white
 
 const HEIGHT = 1.0 / (2.0 * sqrt(3.0))
 const FLAT = PoolVector2Array(
@@ -20,85 +21,81 @@ const POINTY = PoolVector2Array(
 const CENTERS = [POINTY, FLAT]
 const POINTS = [FLAT, POINTY]
 
-var uvs = []
-
-
-func _init():
-	is_ready = false
-	print("_init")
+var m_is_ready = false
+var m_uvs = []
 
 
 func _ready():
-	is_ready = false
-	print("_ready")
-
-
-func ready():
-	print("ready()")
-#	var start = Vector3(1, 1, 0)
-#
-#	for new in Tri.tri_neighbors(start):
-#		var delta = new - start
-#		var pos = Tri.tri_center(start) - Tri.tri_center(new)
-#		print(start, " ", delta, " ", new, " ", pos)
-#
-#	print(POINTY)
+	m_is_ready = true
+	m_uvs = []
 
 	for i in range(8):
 		var x = (2 * i + 1) / float(2 * 8)
 		var v = Vector2(x, 0.8)
-		uvs.append(PoolVector2Array([v, v, v]))
+		m_uvs.append(PoolVector2Array([v, v, v]))
 
 
 func _process(_delta):
 	update()
 
 
-func set_orientation(new_orientation: String):
-	orientation = new_orientation
-	color = Octahedron.ORIENTATION_COLOR[new_orientation]
-	orientation_index = Octahedron.ORIENTATION_INDEX[new_orientation]
-
-func set_color(new_color: int):
-	color = new_color
-	orientation = Octahedron.COLORS_NAME[color] + str(orientation_index)
+func translate_pos(pos: Vector2):
+	return (pos * m_scale + Vector2(1, -1) * 0.5) * rect_size.x * Vector2(1, -1)
 
 
-func set_orientation_index(new_orientation_index: int):
-	orientation_index = new_orientation_index
-	orientation = Octahedron.COLORS_NAME[color] + str(orientation_index)
+static func with_alpha(color: Color, alpha: float) -> PoolColorArray:
+	color.a = alpha
+	return PoolColorArray([color])
 
 
-func translate_pos(pos: Vector2, global_pointy: bool):
-	var y_offset = HEIGHT * (1 if global_pointy else -1) * Vector2.DOWN
-	pos += y_offset
-	return (pos * scale + Vector2(1, -1) * 0.5) * rect_size.x * Vector2(1, -1)
+func draw_tri(pos: Vector2, pointy: bool, color: int, alpha: float):
+	var verts = POINTS[int(pointy)]
+
+	var final_pos = translate_pos(pos)
+	var final_scale = rect_size.x * m_scale * m_local_scale * Vector2(1, -1)
+
+#	draw_set_transform(final_pos, 0, final_scale / m_local_scale)
+#	draw_primitive(verts, with_alpha(m_border_color, alpha), PoolVector2Array())
+	draw_set_transform(final_pos, 0, final_scale)
+#	draw_primitive(verts, with_alpha(m_bg_color, alpha), PoolVector2Array())
+	draw_primitive(verts, with_alpha(Color.white, alpha), m_uvs[color], m_tex)
 
 
-func draw_tri(pos: Vector2, pointy: bool, global_pointy: bool, color: int):
-	var pts = POINTS[int(pointy)]
+func draw_single(pos: Vector2, orientation: String):
+	var color = Octahedron.ORIENTATION_COLOR[orientation]
+	var pointy = Octahedron.POINTY[color]
 
-	draw_set_transform(translate_pos(pos, global_pointy), 0, rect_size.x * scale * Vector2(1, -1))
-	draw_primitive(pts, PoolColorArray(), uvs[color], tex)
+	draw_tri(pos, pointy, color, 1)
+
+	return pointy
+
+
+func draw_set(pos: Vector2, orientation: String, alpha: float):
+	var pointy = draw_single(pos, orientation)
+
+	var centers = CENTERS[int(pointy)]
+	var neighbors = Octahedron.GRAPH[orientation]
+
+	for i in range(3):
+		var neighbor_color = Octahedron.ORIENTATION_COLOR[neighbors[i]]
+
+		draw_tri(pos + centers[i], not pointy, neighbor_color, alpha)
 
 
 func _draw():
-	if not is_ready:
-		ready()
-		is_ready = true
-
-	if tex == null:
+	if m_tex == null:
 		return
 
-	var pointy = Octahedron.POINTY[color]
-	
-	draw_tri(Vector2.ZERO, pointy, pointy, color)
-	
-	var centers = CENTERS[int(pointy)]
-	var o = orientation
-	var neighbors = Octahedron.GRAPH[o]
+	var pointy = Octahedron.POINTY[Octahedron.ORIENTATION_COLOR[m_orientation]]
+	var new_center = CENTERS[int(pointy)][m_move]
+	var new_orientation = Octahedron.GRAPH[m_orientation][m_move]
 
-	for i in range(3):
-		var color = Octahedron.ORIENTATION_COLOR[neighbors[i]]
-		
-		draw_tri(centers[i], not pointy, pointy, color)
+	var percent = m_percent_anim * m_percent_anim * (3 - 2 * m_percent_anim)
+	var start_pos = Vector2.ZERO.linear_interpolate(-new_center, percent)
+	var end_pos = start_pos + new_center
+
+	draw_set(start_pos, m_orientation, 1 - percent)
+	draw_set(end_pos, new_orientation, percent)
+
+#	draw_single(start_pos, m_orientation)
+#	draw_single(end_pos, new_orientation)

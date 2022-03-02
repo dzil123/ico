@@ -8,9 +8,7 @@ var tri_rot: Basis
 var orientation
 
 onready var animator = $Animator
-onready var octa = $Octa
 onready var map = $Map
-onready var facehud = $FaceHUD
 
 
 func _ready():
@@ -32,15 +30,15 @@ func reset():
 	tri_pos = TRI_POS_START
 	tri_rot = Octahedron.START_ROTATION
 	orientation = Octahedron.START_ORIENTATION
-	octa.transform = Transform(tri_rot, tri_pos_3d())
+	animator.octa.transform = Transform(tri_rot, tri_pos_3d())
+	animator.facehud.m_orientation = orientation
+	animator.facehud.m_percent_anim = 0
 
 	do_update()
 
 
 func do_update():
-#	var pos = Tri.tri_center(tris[index % tris.size()])
 	$Indicator.translation = tri_pos_3d() * Vector3(1, 0, 1)
-	facehud.orientation = orientation
 
 	print(orientation, " ", tri_pos)
 
@@ -62,10 +60,13 @@ func move(delta: Vector3):
 	ani.next_pos = tri_pos_2d()
 	ani.prev_basis = tri_rot
 	ani.rotation_axis = Grid.get_rotation_axis(delta)
+	ani.prev_orientation = orientation
 
 	tri_rot = Grid.apply_rotation(tri_rot, delta)
 
 	var move = Grid.delta_to_move(delta)
+	ani.move = move
+
 	orientation = Octahedron.GRAPH[orientation][move]
 
 	animator.start(ani)
@@ -110,8 +111,9 @@ func _process(_delta):
 
 	if Input.is_action_just_pressed("action"):
 		$Camera2.current = not $Camera2.current
-		print("pos ", octa.translation)
-		print("rot ", octa.transform.basis.get_euler() * 180.0 / PI)
+
+	if Input.is_action_just_pressed("reset"):
+		reset()
 
 	if not animator.is_moving:
 		for action in MOVE_ACTIONS:
