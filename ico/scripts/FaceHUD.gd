@@ -10,7 +10,7 @@ export(float, 0, 1) var m_percent_anim = 0
 #export(Color) var m_bg_color = Color("282f36")
 #export(Color) var m_border_color = Color.white
 
-const HEIGHT = 1.0 / (2.0 * sqrt(3.0))
+const HEIGHT = sqrt(3) / 6
 const FLAT = PoolVector2Array(
 	[Vector2(-0.5, HEIGHT), Vector2(0, -2.0 * HEIGHT), Vector2(0.5, HEIGHT)]
 )
