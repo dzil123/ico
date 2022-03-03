@@ -14,6 +14,7 @@ uniform vec2 tex_data_size;
 uniform vec2 tex_data_offset;
 
 varying flat vec3 tri_pos;
+varying flat vec2 global_data;
 
 vec3 pick_tri(vec2 pos) {
     return vec3(ceil(1.0 * pos.x - sqrt(3.0) / 3.0 * pos.y),
@@ -40,18 +41,20 @@ vec2 read_data() {
     vec2 raw_pos = tri_pos.xy + tex_data_offset;
     vec2 pos = (raw_pos * 2.0 + 1.0) / (2.0 * tex_data_size);  // scaled to 0 - 1
     vec4 col = texture(tex_data, pos);
-    return pointy ? col.rg : col.ba;
+    vec2 data = pointy ? col.rg : col.ba;
+    return round(data * 255.0);
 }
 
 void vertex() {
     mat4 mat = WORLD_MATRIX;
     vec2 world_pos = vec2(mat[3][0], mat[3][2]);  // model world position
     tri_pos = pick_tri(world_pos * vec2(1, -1) - 0.25);
-    //	UV2 = vec2(mat[0][2], 0); // 0 if pointy, 1 if flat
+    global_data = read_data();
 }
 
 void fragment() {
     vec3 bary = COLOR.xyz;  // triangle barycentric coordinates
+    ivec2 data = ivec2(global_data);
 
     vec3 k = fwidth(bary) / 2.0;  // 2 is optimal because p-k,p+k
 
@@ -69,9 +72,8 @@ void fragment() {
 
     vec3 new_inner_color = inner_color.rgb;
 
-    int d = int(read_data().r * 255.0);
-    if (d > 0) {
-        new_inner_color = tex_color(d - 1);
+    if (data.r > 0) {
+        new_inner_color = tex_color(data.r - 1);
     }
 
     vec3 color = mix(outer_color.rgb, new_inner_color, edge).rgb;

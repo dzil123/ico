@@ -15,7 +15,7 @@ var last_pos = null
 
 
 func _ready():
-	img.create(SIZE.x, SIZE.y, false, Image.FORMAT_RGBA8)
+	img.create(int(SIZE.x), int(SIZE.y), false, Image.FORMAT_RGBA8)
 	reset()
 
 	tex.storage = ImageTexture.STORAGE_RAW
