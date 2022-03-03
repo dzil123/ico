@@ -1,4 +1,7 @@
 {
     "gdscript_formatter.line_size": 90,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "*.gdshader": "glsl"
+    }
 }
