@@ -5,6 +5,7 @@ signal completed
 export(NodePath) var octa_path
 export(NodePath) var facehub_path
 export(float) var duration = 1.5  # seconds per move
+export(float, 1.0, 10.0) var action_length_constant = 1.0
 
 onready var octa = get_node(octa_path) as Spatial
 onready var facehud = get_node(facehub_path)
@@ -12,13 +13,14 @@ onready var facehud = get_node(facehub_path)
 var is_moving := false
 var percent_elapsed := 0.0  # 0 to 1
 var ani: Ani
+var speed = 1.0
 
 
 func _process(delta):
 	if not is_moving:
 		percent_elapsed = 0.0
 		return
-	percent_elapsed += delta / duration
+	percent_elapsed += delta * speed / duration
 	if percent_elapsed < 1.0:
 		apply_follower(percent_elapsed)
 		return
@@ -33,12 +35,13 @@ func apply_follower(percent: float):
 	octa.transform = calculate(percent)
 
 	facehud.m_orientation = ani.prev_orientation
-	facehud.m_move = ani.move
+	facehud.m_move = Grid.delta_to_move(ani.delta)
 	facehud.m_percent_anim = percent
 
 
 func calculate(percent: float) -> Transform:
-	var basis = ani.prev_basis.rotated(ani.rotation_axis, percent * Octahedron.ANGLE)
+	var prev_basis = Octahedron.ROTATIONS[ani.prev_orientation]
+	var basis = prev_basis.rotated(ani.rotation_axis, percent * Octahedron.ANGLE)
 
 	# assume flat ground
 	# angle_start, angle_end, angle_lerped
@@ -69,3 +72,8 @@ func cancel():
 		apply_follower(1.0)
 	is_moving = false
 	percent_elapsed = 0.0
+	speed = 1.0
+
+
+func action_length(size: int):
+	speed = exp(float(size) / action_length_constant)

@@ -3,7 +3,17 @@ extends Resource
 
 export(Vector2) var prev_pos
 export(Vector2) var next_pos
-export(Basis) var prev_basis
 export(Vector3) var rotation_axis
 export(String) var prev_orientation
-export(int, 0, 2) var move
+export(Vector3) var delta
+
+
+func inverse() -> Ani:
+	var inverse = duplicate()  # cant call Ani.new()?
+	inverse.prev_pos = next_pos
+	inverse.next_pos = prev_pos
+	inverse.rotation_axis = -rotation_axis
+	var move = Grid.delta_to_move(delta)
+	inverse.prev_orientation = Octahedron.GRAPH[prev_orientation][move]
+	inverse.delta = -delta
+	return inverse

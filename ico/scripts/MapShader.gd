@@ -43,6 +43,7 @@ func reset():
 
 func _process(_delta):
 	material.set_shader_param("highlight_tri_pos", game.tri_pos)
+	material.set_shader_param("highlight_cart_pos", game.animator.octa.translation)
 
 	if last_pos == null or last_pos != game.tri_pos:
 		last_pos = game.tri_pos

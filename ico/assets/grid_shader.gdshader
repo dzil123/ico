@@ -8,6 +8,7 @@ uniform vec4 outer_color : hint_color = vec4(vec3(0.4), 1.0);
 uniform vec4 inner_color : hint_color = vec4(vec3(0.2), 1.0);
 uniform bool toggle_outer = false;
 uniform vec3 highlight_tri_pos;
+uniform vec3 highlight_cart_pos;
 uniform bool enable_highlight_tri_pos = true;
 uniform sampler2D tex_colors : hint_black;
 uniform sampler2D tex_data : hint_black;
@@ -57,8 +58,7 @@ float sin01(float x) { return s01(sin(x)); }
 void vertex() {
     mat4 mat = WORLD_MATRIX;
     vec2 world_pos = vec2(mat[3][0], mat[3][2]);  // model world position
-    world_pos = world_pos * vec2(1, -1) - 0.25;
-    tri_pos = pick_tri(world_pos);
+    tri_pos = pick_tri(world_pos * vec2(1, -1) - 0.25);
     ivec3 i_tri_pos = ivec3(round(tri_pos));
     bool pointy = i_tri_pos.x + i_tri_pos.y + i_tri_pos.z == 2;
     global_data = read_data(pointy);
@@ -67,8 +67,9 @@ void vertex() {
     scale = fract(TIME / 4.0) * 2.0;
     // scale = 1.0;
     // scale = s01(sin(TIME + tri_pos.x) * sin(TIME + 2.0 + tri_pos.y));
-    float d = distance(world_pos, tri_center(highlight_tri_pos));
+    float d = distance(world_pos, highlight_cart_pos.xz);
     scale = s01(sin(d + -1.5 * TIME));
+    scale = s01(scale);
 
     // center the triangle as it scales
     VERTEX.xz *= scale;

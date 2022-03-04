@@ -11,7 +11,7 @@ func _ready():
 func _process(delta):
 	var fps = Performance.get_monitor(Performance.TIME_FPS)
 	var process_fps = 1.0 / max(1e-5, Performance.get_monitor(Performance.TIME_PROCESS))
-	fps_label.text = "%.2f\n%.2f" % [fps, process_fps]
+	fps_label.text = "%.2f" % [fps]
 
 
 func read_commit():
@@ -27,7 +27,7 @@ func read_commit():
 	file.close()
 
 	content = content.strip_edges()
-	if content == "":
-		content = "COMMIT"
+	if content == "" or content == "COMMIT":
+		content = ""
 
 	return content

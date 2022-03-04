@@ -11,6 +11,7 @@ shader_param/outer_color = Color( 0.117647, 0.113725, 0.223529, 1 )
 shader_param/inner_color = Color( 0.145098, 0.227451, 0.368627, 1 )
 shader_param/toggle_outer = false
 shader_param/highlight_tri_pos = Vector3( 0, 4, -3 )
+shader_param/highlight_cart_pos = null
 shader_param/enable_highlight_tri_pos = false
 shader_param/tex_data_size = null
 shader_param/tex_data_offset = null
