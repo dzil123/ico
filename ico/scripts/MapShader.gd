@@ -45,9 +45,13 @@ func animator_completed():
 	var ani = animator.ani
 	var tri_pos = Tri.pick_tri(ani.next_pos * Vector2(1, -1))
 
+	paint(tri_pos, ani.next_orientation())
+
+
+func paint(tri_pos: Vector3, orientation: String):
 	material.set_shader_param("highlight_tri_pos", tri_pos)
 
-	var color = Octahedron.ORIENTATION_COLOR[ani.next_orientation()]
+	var color = Octahedron.ORIENTATION_COLOR[orientation]
 	tex_dirty = true
 	img.lock()
 	var pos = tri_pos_to_tex(tri_pos)

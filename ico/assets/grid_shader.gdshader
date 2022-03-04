@@ -63,13 +63,13 @@ void vertex() {
     bool pointy = i_tri_pos.x + i_tri_pos.y + i_tri_pos.z == 2;
     global_data = read_data(pointy);
 
-    scale = sin(TIME) * 0.25 + 0.75;
-    scale = fract(TIME / 4.0) * 2.0;
-    // scale = 1.0;
+    scale = 1.0;
+    // scale = sin(TIME) * 0.25 + 0.75;
+    // scale = fract(TIME / 4.0) * 2.0;
     // scale = s01(sin(TIME + tri_pos.x) * sin(TIME + 2.0 + tri_pos.y));
-    float d = distance(world_pos, highlight_cart_pos.xz);
-    scale = s01(sin(d + -1.5 * TIME));
-    scale = s01(scale);
+    // float d = distance(world_pos, highlight_cart_pos.xz);
+    // scale = s01(sin(d + -1.5 * TIME));
+    // scale = s01(scale);
 
     // center the triangle as it scales
     VERTEX.xz *= scale;

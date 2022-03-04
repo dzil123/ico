@@ -46,6 +46,8 @@ func reset():
 	animator.facehud.m_orientation = orientation
 	animator.facehud.m_percent_anim = 0
 	$MapShader.reset()
+	$MapShader.paint(tri_pos, orientation)
+	$SmoothRotator.translation = tri_pos_3d()
 	undo_stack.clear()
 	action_queue.clear()
 	undo_pointer = -1
