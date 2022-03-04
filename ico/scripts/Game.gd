@@ -23,7 +23,9 @@ func _ready():
 	assert(Tri.is_valid(tri_pos_start))
 
 	reset()
-	animator.connect("completed", self, "update_action_queue")
+	# deferred so that other handlers can react to animator.ani
+	# is this even necessary?
+	# animator.connect("completed", self, "update_action_queue", [], CONNECT_DEFERRED)
 
 
 func tri_pos_2d() -> Vector2:
@@ -52,9 +54,8 @@ func reset():
 
 
 func do_update():
+#	print(orientation, " ", tri_pos)
 	$Indicator.translation = tri_pos_3d() * Vector3(1, 0, 1)
-
-	print(orientation, " ", tri_pos)
 
 
 func can_move(delta: Vector3) -> bool:

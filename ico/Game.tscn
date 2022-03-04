@@ -55,6 +55,7 @@ mesh = SubResource( 3 )
 material/0 = SubResource( 4 )
 
 [node name="Animator" type="Node" parent="."]
+process_priority = 1
 script = ExtResource( 2 )
 octa_path = NodePath("../Octa")
 facehub_path = NodePath("../FaceHUD")

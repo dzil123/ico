@@ -14,6 +14,14 @@ func inverse() -> Ani:
 	inverse.next_pos = prev_pos
 	inverse.rotation_axis = -rotation_axis
 	var move = Grid.delta_to_move(delta)
-	inverse.prev_orientation = Octahedron.GRAPH[prev_orientation][move]
+	inverse.prev_orientation = next_orientation()
 	inverse.delta = -delta
 	return inverse
+
+
+func move() -> int:
+	return Grid.delta_to_move(delta)
+
+
+func next_orientation() -> String:
+	return Octahedron.GRAPH[prev_orientation][move()]

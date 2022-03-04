@@ -18,6 +18,8 @@ var speed = 1.0
 
 func _process(delta):
 	if not is_moving:
+		if percent_elapsed != 0.0:
+			print("reset percent_elapsed ", percent_elapsed)
 		percent_elapsed = 0.0
 		return
 	percent_elapsed += delta * speed / duration
@@ -35,7 +37,7 @@ func apply_follower(percent: float):
 	octa.transform = calculate(percent)
 
 	facehud.m_orientation = ani.prev_orientation
-	facehud.m_move = Grid.delta_to_move(ani.delta)
+	facehud.m_move = ani.move()
 	facehud.m_percent_anim = percent
 
 
@@ -62,6 +64,7 @@ func calculate(percent: float) -> Transform:
 
 func start(new_ani: Ani):
 	if is_moving:
+		assert(false)
 		cancel()
 	ani = new_ani
 	is_moving = true
