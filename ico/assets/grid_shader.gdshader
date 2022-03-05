@@ -14,10 +14,17 @@ uniform sampler2D tex_colors : hint_black;
 uniform sampler2D tex_data : hint_black;
 uniform vec2 tex_data_size;
 uniform vec2 tex_data_offset;
+uniform float Z_exp : hint_range(-10.0, 2.0) = 0.0;
+uniform float time = 0.0;
 
 varying flat vec3 tri_pos;
 varying flat vec2 global_data;
 varying flat float scale;
+
+const float HEIGHT = sqrt(3.0) / 6.0;
+const vec2 pt1 = vec2(-0.5, HEIGHT);
+const vec2 pt2 = vec2(0, -2.0 * HEIGHT);
+const vec2 pt3 = vec2(0.5, HEIGHT);
 
 vec2 tri_center(vec3 tri) {
     tri = round(tri);
@@ -64,12 +71,15 @@ void vertex() {
     global_data = read_data(pointy);
 
     scale = 1.0;
-    // scale = sin(TIME) * 0.25 + 0.75;
+    scale = sin(TIME * 3.14) * 0.25 + 0.9;
+    scale = clamp(scale, 0.0, 1.0);
     // scale = fract(TIME / 4.0) * 2.0;
     // scale = s01(sin(TIME + tri_pos.x) * sin(TIME + 2.0 + tri_pos.y));
     // float d = distance(world_pos, highlight_cart_pos.xz);
     // scale = s01(sin(d + -1.5 * TIME));
     // scale = s01(scale);
+
+    ivec2 data = ivec2(global_data);
 
     // center the triangle as it scales
     VERTEX.xz *= scale;
@@ -113,11 +123,40 @@ void fragment() {
     vec3 bary = COLOR.xyz;  // triangle barycentric coordinates
     ivec2 data = ivec2(global_data);
 
+    if (data.y > 0) {
+        if (data.y == 255) {
+            discard;
+        }
+    }
+
+    float d = distance(vec3(1.0 / 3.0), bary);
+    vec2 norm = bary.x * pt1 + bary.y * pt2 + bary.z * pt3;
+    float a = atan(norm.y, norm.x);
+    float t = fract(TIME * 0.5);
+    t = mix(-6.28, 6.28, t) * 0.5;
+    float k = 0.05 * sin(10.0 * a + t);
+    k = 0.0;
+
+    float Z = exp(Z_exp);
+    float Z_scale = (pow(bary.x, Z) + pow(bary.y, Z) + pow(bary.z, Z));
+    bary = pow(bary, vec3(Z)) / Z_scale;
+
     bool shrink_center = true;  // shrink center or shrink edges
+
+    float low = low_range;
+    low = low / Z_scale;
+    // low = pow(low, Z);
+    low = low / scale;
+
+    float high = high_range;
+    high = high / Z_scale;
+    // high = pow(high, Z);
+    high = high / scale;
 
     float edge;
     if (shrink_center) {
         edge = calc_edge(bary, low_range / scale, high_range / scale);
+        edge = calc_edge(bary, k + low, k + high);
     } else {
         bary = (bary - (1.0 / 3.0)) * scale + (1.0 / 3.0);
         edge = calc_edge(bary, low_range, high_range);
@@ -140,4 +179,9 @@ void fragment() {
     }
 
     ALBEDO = color;
+
+    // ALBEDO = vec3(d);
+    // ALBEDO = vec3(step(0.3 + 0.05 * sin(10.0 * a + t), d));
+    // ALBEDO = vec3(0.3 + 0.05 * sin(10.0 * a + t));
+    // ALBEDO = pow(bary, vec3(3.0));
 }

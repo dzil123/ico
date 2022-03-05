@@ -5,8 +5,8 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/low_range = 0.29
-shader_param/high_range = 0.5
+shader_param/low_range = 0.12
+shader_param/high_range = 0.41
 shader_param/outer_color = Color( 0.117647, 0.113725, 0.223529, 1 )
 shader_param/inner_color = Color( 0.145098, 0.227451, 0.368627, 1 )
 shader_param/toggle_outer = false
@@ -15,4 +15,6 @@ shader_param/highlight_cart_pos = null
 shader_param/enable_highlight_tri_pos = false
 shader_param/tex_data_size = null
 shader_param/tex_data_offset = null
+shader_param/Z_exp = 0.064
+shader_param/time = 0.0
 shader_param/tex_colors = ExtResource( 2 )
