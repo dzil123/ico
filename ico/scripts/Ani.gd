@@ -13,7 +13,6 @@ func inverse() -> Ani:
 	inverse.prev_pos = next_pos
 	inverse.next_pos = prev_pos
 	inverse.rotation_axis = -rotation_axis
-	var move = Grid.delta_to_move(delta)
 	inverse.prev_orientation = next_orientation()
 	inverse.delta = -delta
 	return inverse

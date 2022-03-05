@@ -43,11 +43,11 @@ orientation_start = "O1"
 
 [node name="SmoothRotator" parent="." instance=ExtResource( 11 )]
 controller = NodePath("../Octa")
-interpolation_strength = 1.0
+interpolation_strength = 2.0
 follow_transform = true
 
 [node name="Camera" type="Camera" parent="SmoothRotator"]
-transform = Transform( 1, 0, 0, 0, 0.422191, 0.906507, 0, -0.906507, 0.422191, 0, 4, 1.8 )
+transform = Transform( 1, 0, 0, 0, 0.422191, 0.906507, 0, -0.906507, 0.422191, 0, 4, 2.061 )
 visible = false
 environment = SubResource( 10 )
 current = true

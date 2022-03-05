@@ -25,8 +25,8 @@ func _ready():
 	assert(FLAT_MAT.basis.determinant() == 1)
 
 
-func get_tiles() -> Array:
-	var tiles = []
+func get_tiles() -> PoolVector3Array:
+	var tiles = PoolVector3Array()
 
 	for cell in gridmap_pointy.get_used_cells():
 		assert(cell.y == 0)
